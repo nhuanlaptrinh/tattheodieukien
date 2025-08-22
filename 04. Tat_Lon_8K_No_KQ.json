@@ -1,0 +1,423 @@
+{
+  "name": "04. Tat_Lon_8K_No_KQ",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "triggerAtMinute": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1152,
+        272
+      ],
+      "id": "09299591-2729-4fc4-856a-098dd10672c9",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v23.0/act_1036361418710293/insights?level=campaign&fields=campaign_id,campaign_name,spend,actions&action_breakdowns=['action_type']&action_type_filter=onsite_conversion.total_messaging_connection&date_preset=today&sort=campaign_name_descending&limit&access_token=EAASPNbgDZAbEBPCXi9ygnJEXEZBKR0z85s5P1YmLcRWUmqqtI0dsCNpVZCPXAiBxhvlTZBMnZBI5O1ZA9YDjw80GT3RjnRud4FZBos8sWJalYrRDqXcIJ9G8P5EP96ZCBX8mi8KFawjnrLUJufJSWpFQRPh5TvcBpAvwf6U8CKyBwSX8mZClGr1U7tZBlsxZAGZCvqlZCiRkPShaEd1eFIH4rFIbM",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -928,
+        272
+      ],
+      "id": "608fa620-8819-457f-94f5-aa06c62a27ea",
+      "name": "Get Insight Campaign1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -480,
+        272
+      ],
+      "id": "121c4833-ce30-4e99-83aa-dc02ea9fc903",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -704,
+        272
+      ],
+      "id": "cd5b3171-53d1-4528-918c-a3c2bfc1fcc4",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "80a74765-4665-4196-a462-73a024686439",
+              "leftValue": "={{ $('Split Out').item.json.campaign_name }}",
+              "rightValue": "CD",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "ba799c30-7d55-4a03-9c30-96004dea4e55",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Get Status Campaign').item.json.status }}",
+                    "rightValue": "ACTIVE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "03c6975f-bb64-4f8c-b19f-08dcb199eff0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TAT_QUANG_CAO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a6afb805-66e5-417d-9339-3d2a0b97f014",
+                    "leftValue": "={{ $('Get Status Campaign').item.json.status }}",
+                    "rightValue": "ARCHIVED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ARCHIVED"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4167a561-7c4e-4652-8e9b-921f6e608314",
+                    "leftValue": "={{ $('Get Status Campaign').item.json.status }}",
+                    "rightValue": "PAUSED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PAUSED"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        192,
+        64
+      ],
+      "id": "46d561fd-43e6-428e-b42e-29feecdcf927",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $('Get Status Campaign').item.json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAL8rh1ws3MBPJ8QZAZAn3yDbVJRv9u1nEn52Kt50v8vBMlu7XatGccXGld1GC9MVbxSkSmmR29wxnFQFZCg7Hy7MW9S3OI9EbPlyif3enP8ccmhbWMJXEmhR7JHQMPSUclsobmX1d1raujebrTDl7fuISJBQhoJuILk8Kzy5DZBirbH0e24mJBSSQ0Tu2g5D2Mv1T4dVYDFoc9QMpIQyavj"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "=PAUSED"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        224
+      ],
+      "id": "64e55432-feec-42aa-9329-cb716de694ac",
+      "name": "Enable  Ads1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "970eb3bb-faf1-4eb6-b801-f2694cbef2bd",
+              "leftValue": "={{ Boolean(!$('Split Out').item.json.actions?.length || !$('Split Out').item.json.actions.find(item => item.action_type === 'onsite_conversion.total_messaging_connection')) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9c56c7ff-c737-494e-99af-7c34a334ab6d",
+              "leftValue": "={{Number($('Split Out').item.json.spend) }}",
+              "rightValue": 8000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        160
+      ],
+      "id": "1f795366-e549-41f0-92d2-db766fa2ea1a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.campaign_id }}?fields=lifetime_budget,status&access_token=EAASPNbgDZAbEBPCXi9ygnJEXEZBKR0z85s5P1YmLcRWUmqqtI0dsCNpVZCPXAiBxhvlTZBMnZBI5O1ZA9YDjw80GT3RjnRud4FZBos8sWJalYrRDqXcIJ9G8P5EP96ZCBX8mi8KFawjnrLUJufJSWpFQRPh5TvcBpAvwf6U8CKyBwSX8mZClGr1U7tZBlsxZAGZCvqlZCiRkPShaEd1eFIH4rFIbM",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -256,
+        0
+      ],
+      "id": "c4a6ac1c-3f24-4c6f-9dee-28331eacdc14",
+      "name": "Get Status Campaign"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get Insight Campaign1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Insight Campaign1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get Status Campaign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enable  Ads1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Enable  Ads1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Status Campaign": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8022fbda-4109-45b2-aab9-11dd7d8006c8",
+  "meta": {
+    "instanceId": "94a383c02457267bcc44878635a0fa02b7d3206c5479bfc8890faa812e2bbd97"
+  },
+  "id": "ya3qjmT7EwBOtepH",
+  "tags": []
+}
