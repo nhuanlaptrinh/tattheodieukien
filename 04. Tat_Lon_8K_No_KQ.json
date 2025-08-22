@@ -23,7 +23,7 @@
     },
     {
       "parameters": {
-        "url": "=https://graph.facebook.com/v23.0/act_1036361418710293/insights?level=campaign&fields=campaign_id,campaign_name,spend,actions&action_breakdowns=['action_type']&action_type_filter=onsite_conversion.total_messaging_connection&date_preset=today&sort=campaign_name_descending&limit&access_token=EAASPNbgDZAbEBPCXi9ygnJEXEZBKR0z85s5P1YmLcRWUmqqtI0dsCNpVZCPXAiBxhvlTZBMnZBI5O1ZA9YDjw80GT3RjnRud4FZBos8sWJalYrRDqXcIJ9G8P5EP96ZCBX8mi8KFawjnrLUJufJSWpFQRPh5TvcBpAvwf6U8CKyBwSX8mZClGr1U7tZBlsxZAGZCvqlZCiRkPShaEd1eFIH4rFIbM",
+        "url": "=https://graph.facebook.com/v23.0/act_1036361418710293/insights?level=campaign&fields=campaign_id,campaign_name,spend,actions&action_breakdowns=['action_type']&action_type_filter=onsite_conversion.total_messaging_connection&date_preset=today&sort=campaign_name_descending&limit&access_token=",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -266,7 +266,7 @@
     },
     {
       "parameters": {
-        "url": "=https://graph.facebook.com/v23.0/{{ $json.campaign_id }}?fields=lifetime_budget,status&access_token=EAASPNbgDZAbEBPCXi9ygnJEXEZBKR0z85s5P1YmLcRWUmqqtI0dsCNpVZCPXAiBxhvlTZBMnZBI5O1ZA9YDjw80GT3RjnRud4FZBos8sWJalYrRDqXcIJ9G8P5EP96ZCBX8mi8KFawjnrLUJufJSWpFQRPh5TvcBpAvwf6U8CKyBwSX8mZClGr1U7tZBlsxZAGZCvqlZCiRkPShaEd1eFIH4rFIbM",
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.campaign_id }}?fields=lifetime_budget,status&access_token=",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -414,7 +414,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8022fbda-4109-45b2-aab9-11dd7d8006c8",
+  "versionId": "53977d2d-73fb-4ec2-836f-c2e768392e0b",
   "meta": {
     "instanceId": "94a383c02457267bcc44878635a0fa02b7d3206c5479bfc8890faa812e2bbd97"
   },
